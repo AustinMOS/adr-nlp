@@ -129,5 +129,9 @@ dmypy.json
 .pyre/
 
 # jsonl data files
-.jsonl
+*.jsonl
 data/
+
+# Training runs & WANDB logs
+wandb/
+cross-validation-finetuned/
