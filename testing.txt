@@ -1,0 +1,5 @@
+# Pancreatitis
+    - Lipase: 535 -> 154 -> 145
+    - Managed with NBM, IV fluids
+    - CT AP and abdo USS: normal
+    - Likely secondary to Azathioprine - ceased, never to be used again.
