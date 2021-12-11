@@ -9,7 +9,7 @@ def label_table(dataset):
     dataset['tokens'] = tokens
     dataset['ner_tags'] = offsets_to_biluo_tags(
         nlp(dataset['text']), 
-        [(d['start'], d['end'], d['label']) for d in dataset['spans']])
+        [(d['start'], d['end'], d['label']) for d in [d for d in (dataset['spans'] or [])]])
     
     return dataset
 
