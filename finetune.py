@@ -129,7 +129,7 @@ def main(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train an NLP model')
-    parser.add_argument('--model_name', type=str, default='austin/deberta-pretrained-large', help='Choose a model from the HF hub')
+    parser.add_argument('--model_name', type=str, default='austin/Austin-MeDeBERTa', help='Choose a model from the HF hub')
 
     parser.add_argument('--hub_on', dest='push_to_hub', action='store_true', help='Push the model to the HF hub')
     parser.add_argument('--hub_off', dest='push_to_hub', action='store_false', help='Push the model to the HF hub')
@@ -154,9 +154,14 @@ if __name__ == "__main__":
     parser.add_argument('--text_col', type=str, default='text', help='Name of column in datafile that contains the text')
     parser.add_argument(
         '--tokenizer_name', 
-        default='austin/deberta-pretrained-large',
-        help='Name of the tokenizer. Must be a fast tokenizer.')
+         type=none_or_str, 
+         nargs='?', 
+         default=None,
+        help='Name of the tokenizer if different to model. Must be a fast tokenizer.')
     parser.add_argument('--folds', default=5, type=int, help='Number of folds to split data into.')
     args = parser.parse_args()
+
+    if args.tokenizer_name is None:
+        args.tokenizer_name = args.model_name
 
     main(**vars(args))
