@@ -12,7 +12,7 @@ from pathlib import Path
 def main(
     model_name, push_to_hub, datafile, epochs, batch_size, lr, 
     weight_decay, seed, wb, run_name, project, text_file, 
-    save_data_dir, text_col, tokenizer_name, folds
+    save_data_dir, text_col, tokenizer_name, folds, hub_id
     ):
 
     if wb:
@@ -44,8 +44,10 @@ def main(
             per_device_eval_batch_size=batch_size,
             num_train_epochs=epochs,
             weight_decay=weight_decay,
-            push_to_hub=False,
+            push_to_hub=push_to_hub,
             seed=seed,
+            hub_model_id=hub_id,
+            hub_strategy="end",
         )
 
     if folds > 1:
@@ -108,7 +110,7 @@ def main(
             )
 
         trainer.train()
-
+        
         doc_metrics = doc_level_metrics(
                 trainer,
                 dataset.dset["test"], 
@@ -125,6 +127,9 @@ def main(
             wandb.finish()
 
         print(doc_metrics)
+
+        if push_to_hub:
+            trainer.push_to_hub()
 
 
 if __name__ == "__main__":
@@ -159,6 +164,7 @@ if __name__ == "__main__":
          default=None,
         help='Name of the tokenizer if different to model. Must be a fast tokenizer.')
     parser.add_argument('--folds', default=5, type=int, help='Number of folds to split data into.')
+    parser.add_argument('--hub_id', type=str, default=None, help='If pushing to hub, use this id')
     args = parser.parse_args()
 
     if args.tokenizer_name is None:
